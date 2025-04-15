@@ -1,9 +1,11 @@
-package Entity;
+package org.example.Entity;
 
-public  class CajaAhorro extends Cuenta implements IGestionSaldo{
+import org.example.DTOs.CajaAhorroDTO;
 
-    public CajaAhorro(double saldo, int catOperaciones) {
-        super(saldo, catOperaciones);
+public  class CajaAhorro extends Cuenta implements IGestionSaldo {
+
+    public CajaAhorro(CajaAhorroDTO caja) {
+        super(caja.getSaldo(), caja.getNumCuenta());
     }
 
     @Override
@@ -33,5 +35,10 @@ public  class CajaAhorro extends Cuenta implements IGestionSaldo{
     @Override
     public synchronized int getOperaciones() {
         return catOperaciones;
+    }
+
+    @Override
+    public synchronized int getNumCuenta(){
+        return numCuenta;
     }
 }

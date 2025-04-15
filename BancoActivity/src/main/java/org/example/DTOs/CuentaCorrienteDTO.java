@@ -1,9 +1,9 @@
-package DTOs;
+package org.example.DTOs;
 
 public class CuentaCorrienteDTO {
     double saldo;
     double giroDescubierto;
-    int cantOeraciones;
+    int numCuenta;
 
     public double getGiroDescubierto() {
         return giroDescubierto;
@@ -13,13 +13,13 @@ public class CuentaCorrienteDTO {
         return saldo;
     }
 
-    public int getCantOeraciones() {
-        return cantOeraciones;
+    public int getNumCuenta() {
+        return numCuenta;
     }
 
-    public CuentaCorrienteDTO(double saldo, double giroDescubierto, int cantOeraciones){
-        this.cantOeraciones=cantOeraciones;
+    public CuentaCorrienteDTO(double saldo, double giroDescubierto, int numCuenta){
         this.giroDescubierto=giroDescubierto;
         this.saldo=saldo;
+        this.numCuenta=numCuenta;
     }
 }

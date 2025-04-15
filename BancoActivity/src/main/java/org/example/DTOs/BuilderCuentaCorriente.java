@@ -1,26 +1,26 @@
-package DTOs;
-
-import Entity.CuentaCorriente;
+package org.example.DTOs;
 
 public class BuilderCuentaCorriente {
     double saldo;
     double giroDescubierto;
-    int cantOeraciones;
+
+    int numCuenta;
 
     public void setSaldo(double saldo) {
         this.saldo = saldo;
     }
 
-    public void setCantOeraciones(int cantOeraciones) {
-        this.cantOeraciones = cantOeraciones;
-    }
 
     public void setGiroDescubierto(double giroDescubierto) {
         this.giroDescubierto = giroDescubierto;
     }
 
+    public void setNumCuenta(int numCuenta) {
+        this.numCuenta = numCuenta;
+    }
+
     public CuentaCorrienteDTO build(){
-        return new CuentaCorrienteDTO(saldo,giroDescubierto,cantOeraciones);
+        return new CuentaCorrienteDTO(saldo,giroDescubierto, numCuenta);
     }
 
 

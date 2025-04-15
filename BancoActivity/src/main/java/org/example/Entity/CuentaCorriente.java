@@ -1,10 +1,13 @@
-package Entity;
+package org.example.Entity;
 
-public  class CuentaCorriente extends Cuenta implements IGestionSaldo{
+import org.example.DTOs.CuentaCorrienteDTO;
+
+public  class CuentaCorriente extends Cuenta implements IGestionSaldo {
    public  double giroDescubierto;
 
-   public CuentaCorriente(double saldo, int cantOperaciones){
-       super(saldo,cantOperaciones);
+   public CuentaCorriente(CuentaCorrienteDTO cuenta){
+       super(cuenta.getSaldo(), cuenta.getNumCuenta());
+       this.giroDescubierto=cuenta.getGiroDescubierto();
    }
     @Override
     public synchronized boolean agregarSaldo(double monto) {
@@ -33,7 +36,10 @@ public  class CuentaCorriente extends Cuenta implements IGestionSaldo{
 
     @Override
     public synchronized int getOperaciones() {
-
         return catOperaciones;
+    }
+    @Override
+    public synchronized int getNumCuenta(){
+        return numCuenta;
     }
 }
