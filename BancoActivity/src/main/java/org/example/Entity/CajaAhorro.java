@@ -2,7 +2,7 @@ package org.example.Entity;
 
 import org.example.DTOs.CajaAhorroDTO;
 
-public  class CajaAhorro extends Cuenta implements IGestionSaldo {
+public  class CajaAhorro extends Cuenta {
 
     public CajaAhorro(CajaAhorroDTO caja) {
         super(caja.getSaldo(), caja.getNumCuenta());
@@ -10,35 +10,19 @@ public  class CajaAhorro extends Cuenta implements IGestionSaldo {
 
     @Override
     public synchronized boolean agregarSaldo(double monto) {
-        saldo+=monto;
+        saldo += monto;
         catOperaciones++;
         return false;
     }
 
     @Override
     public synchronized boolean quitarSaldo(double monto) {
-        if (saldo>=monto){
-            saldo-=monto;
+        if (saldo >= monto) {
+            saldo -= monto;
             catOperaciones++;
             return true;
-        }else {
+        } else {
             return false;
         }
-    }
-
-    @Override
-    public synchronized double getSaldo() {
-        catOperaciones++;
-        return this.saldo;
-    }
-
-    @Override
-    public synchronized int getOperaciones() {
-        return catOperaciones;
-    }
-
-    @Override
-    public synchronized int getNumCuenta(){
-        return numCuenta;
     }
 }

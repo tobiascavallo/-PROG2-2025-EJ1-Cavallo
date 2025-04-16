@@ -2,7 +2,7 @@ package org.example.Entity;
 
 import org.example.DTOs.CuentaCorrienteDTO;
 
-public  class CuentaCorriente extends Cuenta implements IGestionSaldo {
+public  class CuentaCorriente extends Cuenta  {
    public  double giroDescubierto;
 
    public CuentaCorriente(CuentaCorrienteDTO cuenta){

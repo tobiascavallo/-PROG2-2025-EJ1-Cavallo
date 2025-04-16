@@ -1,112 +1,66 @@
 package org.example.Service;
 import org.example.Entity.Cuenta;
-import org.example.Entity.IGestionSaldo;
-
-
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.function.Supplier;
+
 
 public class LogicaCuenta {
-    private List<Cuenta> cuentas = new ArrayList<Cuenta>();
+    private static volatile LogicaCuenta logica;
+    private List<Cuenta> cuentas = Collections.synchronizedList(new ArrayList<>());
 
+    private LogicaCuenta(){}
 
-    public List<Cuenta> getCuentas() {
-        return cuentas;
-    }
-
-    public boolean agregarSaldo(int nroCuenta, double montoAgregar) throws ExecutionException, InterruptedException {
-        long startMethod = System.nanoTime();
-
-        List<CompletableFuture<Void>> futureList = new ArrayList<CompletableFuture<Void>>();
-
-        for (Cuenta c : cuentas) {
-            if (c.getNumCuenta() == nroCuenta) {
-                CompletableFuture<Void> cf = CompletableFuture.supplyAsync(new Supplier<Void>() {
-                    @Override
-                    public Void get() {
-                        IGestionSaldo gestionSaldo = (IGestionSaldo) c;
-                        gestionSaldo.agregarSaldo(montoAgregar);
-                        return null;
-                    }
-                });
-                futureList.add(cf);
-
+    public static LogicaCuenta getInstance(){
+        if(logica == null){
+            synchronized (LogicaCuenta.class){
+                if(logica == null){
+                    logica = new LogicaCuenta();
+                }
             }
         }
-        if (futureList != null) {
-            CompletableFuture<Void> allDone = CompletableFuture.allOf(futureList.toArray(new CompletableFuture[futureList.size()]));
-            allDone.join();
-            long end=System.nanoTime();
-            System.out.println("Saldo agregado correctamente saldo a la cuenta " + nroCuenta);
-            System.out.println("tiempo de ejecucion: "+ (end-startMethod)+" ms");
-            return true;
-        }
-
-        return false;
+        return logica;
     }
 
-
-
-    public boolean quitarSaldo(int numCuenta, double monto){
-        long startMethod = System.nanoTime();
-
-        List<CompletableFuture<Void>> futureList = new ArrayList<CompletableFuture<Void>>();
-
-        for (Cuenta c : cuentas) {
-            if (c.getNumCuenta() == numCuenta) {
-                CompletableFuture<Void> cf = CompletableFuture.supplyAsync(new Supplier<Void>() {
-                    @Override
-                    public Void get() {
-                        IGestionSaldo gestionSaldo = (IGestionSaldo) c;
-                        gestionSaldo.quitarSaldo(monto);
-                        return null;
-                    }
-                });
-                futureList.add(cf);
-
+    public boolean agregarSaldo(int numCuenta, double saldoAgregar){
+        synchronized (cuentas) {
+            for (Cuenta c : cuentas) {
+                if (c.getNumCuenta() == numCuenta) {
+                    c.agregarSaldo(saldoAgregar);
+                }
             }
-        }
-        if (futureList != null) {
-            CompletableFuture<Void> allDone = CompletableFuture.allOf(futureList.toArray(new CompletableFuture[futureList.size()]));
-            allDone.join();
-            long end=System.nanoTime();
-            System.out.println("Saldo quitado correctamente saldo de la cuenta " + numCuenta);
-            System.out.println("tiempo de ejecucion: "+ (end-startMethod)+" ms");
-            return true;
         }
         return true;
     }
 
-    public double consultarSaldo(int numCuenta) {
-        long startMethod = System.nanoTime();
-
-        List<CompletableFuture<Double>> futureList = new ArrayList<CompletableFuture<Double>>();
-
-        for (Cuenta c : cuentas) {
-            if (c.getNumCuenta() == numCuenta) {
-                CompletableFuture<Double> cf = CompletableFuture.supplyAsync(new Supplier<Double>() {
-                    @Override
-                    public Double get() {
-                        IGestionSaldo gestionSaldo = (IGestionSaldo) c;
-                        return gestionSaldo.getSaldo();
-                    }
-                });
-                futureList.add(cf);
-
+    public boolean quitarSaldo(int numCuenta, double saldoQuitar){
+        synchronized (cuentas){
+            for (Cuenta c : cuentas){
+                if (c.getNumCuenta()==numCuenta){
+                    c.quitarSaldo(saldoQuitar);
+                    return true;
+                }
             }
         }
-        if (futureList != null) {
-            CompletableFuture<Void> allDone = CompletableFuture.allOf(futureList.toArray(new CompletableFuture[futureList.size()]));
-            allDone.join();
-            long end=System.nanoTime();
-            System.out.println("Su saldo es: $"+ futureList.get(0).join());
-            System.out.println("tiempo de ejecucion: "+ (end-startMethod)+" ms");
+        return false;
+    }
+
+    public double consultarSaldo(int numCuenta){
+        synchronized (cuentas){
+            for (Cuenta c: cuentas){
+                if(c.getNumCuenta()==numCuenta){
+                    return c.getSaldo();
+                }
+            }
         }
+        return 0;
+    }
 
-        return futureList.get(0).join();
-
+    public boolean agregarCuenta(Cuenta c){
+        cuentas.add(c);
+        return true;
     }
 }
+
+
+
