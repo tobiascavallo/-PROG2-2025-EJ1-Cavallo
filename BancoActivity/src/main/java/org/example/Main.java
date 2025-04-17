@@ -74,9 +74,11 @@ public class Main {
         System.out.println("tiempo en realizar las 10 mil iteraicones: "+(endMethod-startMethod)+" (ms)");
 
         System.out.println("se han realizado 10000 movimiento en total");
-        for (int i=0;i<10;i++){
-            System.out.println("Cuenta: "+ i);
-            System.out.println("Saldo: "+ logicaCuenta.consultarSaldo(i));
+
+        for (Cuenta c: logicaCuenta.getCuentas()){
+            System.out.println("Tipo de cuenta: " + c.getClass().getSimpleName());
+            System.out.println("Cuenta: "+ c.getNumCuenta());
+            System.out.println("Saldo: "+ c.getSaldo());
         }
 
     }

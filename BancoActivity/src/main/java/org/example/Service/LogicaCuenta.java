@@ -9,6 +9,7 @@ public class LogicaCuenta {
     private static volatile LogicaCuenta logica;
     private List<Cuenta> cuentas = Collections.synchronizedList(new ArrayList<>());
 
+
     private LogicaCuenta(){}
 
     public static LogicaCuenta getInstance(){
@@ -20,6 +21,10 @@ public class LogicaCuenta {
             }
         }
         return logica;
+    }
+
+    public List<Cuenta> getCuentas() {
+        return cuentas;
     }
 
     public boolean agregarSaldo(int numCuenta, double saldoAgregar){
@@ -60,6 +65,7 @@ public class LogicaCuenta {
         cuentas.add(c);
         return true;
     }
+
 }
 
 

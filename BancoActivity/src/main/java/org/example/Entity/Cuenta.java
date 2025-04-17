@@ -1,6 +1,6 @@
 package org.example.Entity;
 
-public class Cuenta implements IGestionSaldo{
+public abstract class Cuenta implements IGestionSaldo{
     protected double saldo;
     protected int catOperaciones=0;
     protected int numCuenta;
@@ -11,16 +11,6 @@ public class Cuenta implements IGestionSaldo{
     }
     public int getNumCuenta(){
         return numCuenta;
-    }
-
-    @Override
-    public boolean agregarSaldo(double monto) {
-        return false;
-    }
-
-    @Override
-    public boolean quitarSaldo(double monto) {
-        return false;
     }
 
     public double getSaldo() {
