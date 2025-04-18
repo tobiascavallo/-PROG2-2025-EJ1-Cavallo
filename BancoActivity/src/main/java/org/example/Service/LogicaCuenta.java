@@ -31,11 +31,17 @@ public class LogicaCuenta {
         synchronized (cuentas) {
             for (Cuenta c : cuentas) {
                 if (c.getNumCuenta() == numCuenta) {
-                    c.agregarSaldo(saldoAgregar);
+                    if (saldoAgregar>0){
+                        c.agregarSaldo(saldoAgregar);
+                        return true;
+                    }else {
+                        return false;
+                    }
+
                 }
             }
         }
-        return true;
+        return false;
     }
 
     public boolean quitarSaldo(int numCuenta, double saldoQuitar){
